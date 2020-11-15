@@ -64,14 +64,15 @@ void arrowadvance(int step, char col) {
   int b=rgb.b;
   
   int st = 0 + step;
-  int pos = st;
+  int pos = st+1;
+  st=st+1;
   // first row
-  for (int i = st; i < st+8; i++) {
+  for (int i = st; i < st+6; i++) {
     setPixel(i, r,g,b); 
     pos++;
   }
   // second row
-  st = pos + 1;
+  st = pos + 2;
   pos = st;
   for (int i = st; i < st+6; i++) {
     setPixel(i, r,g,b); 
