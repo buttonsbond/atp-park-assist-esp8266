@@ -51,3 +51,13 @@ uint8_t gHue = 100; // rotating "base color" used by many of the patterns
 
 // declare the array of LEDs
 CRGB leds[NUM_LEDS];
+
+
+// OTA updates
+#define ENABLE_OTA      // comment out if you don't want OTA updates
+int OTAport = 8266;
+
+// monitor battery voltage
+// in the circuit I used 2 12k resistors one from the 3.3v rail the other to the ground rail, with a wire
+// connecting from middle of those (voltage divider) to the D1 mini A0 analog input
+const int VOLTAGE_IN = A0;

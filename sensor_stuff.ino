@@ -20,7 +20,7 @@ void TestFront(void) {
     done = true;
   }
 
-  if ((distanceFront < MidFront) && (!done)) {
+  if ((distanceFront <= MidFront) && (!done)) {
     advance('Y'); // front is somewhere between half way there and optimal
     //Serial.println("Front: Almost");
     done = true;
@@ -28,8 +28,7 @@ void TestFront(void) {
 
   if ((distanceFront > 1000)) {
       // we will check 1 more time after a delay to make sure this really is a calibration request
-      delay(2000);
-        Front();
+      debounce('F');
         if (distanceFront > 1000) {
         Serial.println("FRONT CALIBRATION");
         calibrateFront();
@@ -67,7 +66,7 @@ void TestSide(void) {
     done = true;
   }
 
-  if ((distanceSide < MidSide) && (!done)) {
+  if ((distanceSide <= MidSide) && (!done)) {
     side('Y'); // side is somewhere between half way there and optimal
     //Serial.println("SIDE: Almost");
     done = true;
@@ -75,8 +74,7 @@ void TestSide(void) {
 
   if ((distanceSide > 1000)) {
       // we will check 1 more time after a delay to make sure this really is a calibration request
-      delay(2000);
-        Side();
+      debounce('S');
         if (distanceSide > 1000) {
         Serial.println("SIDE CALIBRATION");
         calibrateFront();
@@ -93,6 +91,45 @@ void TestSide(void) {
         delay(3000);
         }
   }
+}
+
+void debounce(char frontorside) {
+  // was getting a few false readings of out of range which I use to calibrate the sensors so need to
+  // take a few readings to make sure it is a calibration request 
+  boolean falsereading=true;
+  
+  for (int test=0; test < 8; test++) {
+    if (frontorside == 'F') {
+      Front();
+      Serial.println(distanceFront);
+    } else {
+      Side();
+      Serial.println(distanceSide);
+    }
+    delay(100);
+    if (frontorside == 'F')
+        {
+        if (distanceFront < 1000) {
+          test=8;
+          falsereading=true;
+          } else {
+          falsereading=false;
+          }
+        } else
+        {
+        if (distanceSide < 1000) {
+          test=8;
+          falsereading=true;
+          } else {
+          falsereading=false;
+          }
+        }
+  if (frontorside == 'F') {
+    if (!falsereading) { distanceFront=1001; } else { distanceFront=100; }
+  } else {
+    if (!falsereading) { distanceSide=1001; } else { distanceSide=100; }    
+  }
+}
 }
 
 void Front(void) {
