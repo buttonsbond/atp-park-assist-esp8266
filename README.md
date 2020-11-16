@@ -19,3 +19,5 @@ set that as the final distance.
 the rgb panel has a green, yellow, red advancing arrow to indicate forward movement (red is stop!)
 
 the sides of the rgb panel, have green, yellow, blue to indicate side distance (blue is stop)
+
+You'll need this library: https://github.com/bbkbarbar/Arduino-HC-SR04-library
