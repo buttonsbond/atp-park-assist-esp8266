@@ -31,8 +31,8 @@ Libraries needed/used
 
 Thanks to the respective authors of these libraries, and apologies if I missed any
 
-https://github.com/bbkbarbar/Arduino-HC-SR04-library
-https://github.com/highno/rtcvars
+* https://github.com/bbkbarbar/Arduino-HC-SR04-library
+* https://github.com/highno/rtcvars
 
 
 Caveat
