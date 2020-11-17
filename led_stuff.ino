@@ -27,7 +27,7 @@ void showStrip() {
 }
 
 void setPixel(int Pixel, byte red, byte green, byte blue) {
-  if (!nochange) {
+  if (nochange==0) {
  #ifdef ADAFRUIT_NEOPIXEL_H
    // NeoPixel
    strip.setPixelColor(Pixel, strip.Color(red, green, blue));

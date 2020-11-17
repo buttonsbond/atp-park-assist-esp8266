@@ -81,10 +81,9 @@ int OTAport = 8266;
 // connecting from middle of those (voltage divider) to the D1 mini A0 analog input
 const int VOLTAGE_IN = A0;
 
-
 //
 // 
-boolean nochange = false;
+int nochange = 0;
 int samereading = 0;
 int samereadingcounter = 0;
 int CalibrateDistance = 1000; 

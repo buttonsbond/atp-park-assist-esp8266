@@ -41,3 +41,11 @@ void debugmessages(String msg) {
     lcdmessage(2,msg);
   #endif
 }
+void debugmessages2(String msg) {
+  #ifdef SERIAL_DEBUG
+    Serial.println(msg);
+  #endif
+  #ifdef LCD_DEBUG
+    lcdmessage(3,msg);
+  #endif 
+}

@@ -34,3 +34,18 @@ void lcdmessage(int line, String msg) {
   lcd.print(msg);
 #endif
 }
+
+void topright() {
+  lcd.setCursor(13,0);
+  lcd.print("CH: " + String(nochange)+" ");
+}
+
+void bottomright() {
+  lcd.setCursor(13,2);
+  lcd.print("SF: " + String(SetDistanceFront)+" ");
+}
+
+void showvolts(String s) {
+  lcd.setCursor(13,1);
+  lcd.print(s);
+}

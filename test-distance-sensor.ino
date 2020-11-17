@@ -15,6 +15,10 @@
   #include <ArduinoOTA.h>
   #include <ESP8266mDNS.h>
 #endif
+// this is for saving variables in RTC memory when the module sleeps to save battery
+#include <RTCVars.h>
+// setup RTC variable saving
+RTCVars state; // create the state object
 
 #ifdef LCD_DEBUG
   #include <Wire.h>
@@ -34,6 +38,19 @@ ESP8266WebServer server(80);   //instantiate server at port 80 (http port)
 String page = "";
 
 void setup(void){
+//
+// before we do anything else check for variables saved in RTC
+  state.registerVar( &distanceFront );  // we send a pointer to each of our variables
+  state.registerVar( &distanceSide );
+  state.registerVar( &nochange );
+  state.registerVar( &SetDistanceSide);
+  state.registerVar( &SetDistanceFront);
+  state.registerVar( &SetDistanceSideMax);
+  state.registerVar( &SetDistanceFrontMax);
+  state.registerVar( &MidFront);
+  state.registerVar( &MidSide);
+  state.registerVar( &samereading);
+  state.loadFromRTC();
 hc_f.init(trigPinFront, echoPinFront);
 hc_s.init(trigPinSide, echoPinSide);
 
@@ -86,7 +103,7 @@ void loop(void){
   #ifdef LCD_DEBUG
     showsensors();
   #endif
-  debugmessages("Volts: " + String(analogRead(VOLTAGE_IN)));
+  showvolts("VO: " + String(analogRead(VOLTAGE_IN)));
 
 //  delay(200);
 //  server.handleClient();

@@ -1,6 +1,8 @@
 void GetDistances(void) {
   TestFront();
-  if (!nochange) {
+  topright();
+  bottomright();
+  if (nochange==0) {
   TestSide(); // only test side when the whole shebang is up and running - otherwise if its just a wakeup to check, just test the front sensor
   }
 }
@@ -12,22 +14,22 @@ void TestFront(void) {
   FastLED.delay(1000/FRAMES_PER_SECOND);
 
 // only do the LEDs if change in reading
-if (!nochange) {
+if (nochange==0) {
  
  if (distanceFront <= SetDistanceFront) {
     advance('R'); // Side 'STOP'
-    debugmessages("FRNT: STOP");
+    debugmessages("FT: STOP  ");
     done = true;
   }
   if ((distanceFront > MidFront) && (!done)) {
     advance('G'); // Front is miles away
-    debugmessages("FRNT: Not close");
+    debugmessages("FT: FAR   ");
     done = true;
   }
 
   if ((distanceFront <= MidFront) && (!done)) {
     advance('Y'); // front is somewhere between half way there and optimal
-    debugmessages("FRNT: Almost");
+    debugmessages("FT: NEAR  ");
     done = true;
   }
 
@@ -71,18 +73,18 @@ void TestSide(void) {
 
   if (distanceSide <= SetDistanceSide) {
     side('B'); // Side 'STOP'
-    //Serial.println("SIDE: STOP");
+    debugmessages2("SD: STOP  ");
     done = true;
   }
   if ((distanceSide > MidSide) && (!done)) {
     side('G'); // Side is miles away
-    //Serial.println("SIDE: Not close enough");
+    debugmessages2("SD: FAR   ");
     done = true;
   }
 
   if ((distanceSide <= MidSide) && (!done)) {
     side('Y'); // side is somewhere between half way there and optimal
-    //Serial.println("SIDE: Almost");
+    debugmessages2("SD: NEAR  ");
     done = true;
   }
 
@@ -165,30 +167,29 @@ void Front(void) {
   //distanceFront=hc_f.measureDistanceCm();
   distanceFront=hc_f.readAccurateDisctanceInCm();
   //
-  if (nochange) { lcdmessage(3,"no change after wake?"); }
   // 
   // check to see if the measurement has changed - if it hasn't car has stopped or not there and we
   // should turn off the lights, save some battery and keep checking back every now and again
   int low = samereading - 5;
-  int high = samereading + 5;
+  int high = samereading + 5;  
   if ((distanceFront > low) && (distanceFront < high) && (distanceFront < 1000)) {
     samereadingcounter ++;
   } else {
     samereading = distanceFront;
     samereadingcounter = 0;
-    nochange=false;
+    nochange=0;
   }
   if (samereadingcounter > 10) {
-    nochange=true;
+    nochange=1;
     lightsoff();
+    FastLED.show();
     #ifdef LCD_DEBUG
-      lcdmessage(3,"SLEEP");
+      lcdmessage(3," -- SLEEP -- ");
+      lcd.backlight(); 
     #endif
     // turned off deep sleep as need to implement a way to recover variable states otherwise the program just starts afresh
-    // ESP.deepSleep(5 * 1000000); // rst pin has to be connected to d0 in order for deepsleep to work apparently
-    #ifdef LCD_DEBUG
-      lcdmessage(3,"CHECK");
-    #endif
+    state.saveToRTC();
+    ESP.deepSleep(5 * 1000000); // rst pin has to be connected to d0 in order for deepsleep to work apparently
     //Serial.println("nothing has changed in a while");
     //Serial.print("Reading was : ");
     //Serial.println(distanceFront);
