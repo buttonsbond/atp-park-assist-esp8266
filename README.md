@@ -34,3 +34,9 @@ Thanks to the respective authors of these libraries, and apologies if I missed a
 https://github.com/bbkbarbar/Arduino-HC-SR04-library
 https://github.com/highno/rtcvars
 
+
+Caveat
+I recommend you use the same pins as I did. I had an issue with one of the (now) unused pins when the LCD panel was also in use in that one of the sensors stopped working. Not sure why but changing it got over that.
+
+Say hi
+If you like my project, please send me a photo and say hi. If you have any improvements, be my guest and remember to share back!
