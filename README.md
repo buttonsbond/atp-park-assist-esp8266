@@ -1,23 +1,36 @@
 # atp-park-assist-esp8266
-Parking assist using 2 ultrasonic sensors, 8x8 RGB pixel and d1 mini clone
-
+Parking assist using 2 ultrasonic sensors, 8x8 RGB pixel and d1 mini clone. Optionally you can connect a 4 panel LCD screen to help with debugging/calibrating when the equipment is in situ.
+===========================
 Just had an automatic rolling door fitted to the drive. Parking is a bit tight due to the car port we have, the middle posts get in the way of the drivers/passenger door opening. It is possible, if you park just right to get in and out of at least one of those doors. A parking sensor to help would be just the job, one to judge if the car is far enough forward, and another at the side to judge if over to the right enough. This project utilises 2 ultrasonic 5v sensors (HC-SR04), a D1 Mini clone (4Mb version), and an 8x8 RGB pixel panel.
 
 most of default settings can be changed in settings.h
 
+Features
+========
+
+1. Calibrate either sensor for its minimum distance by placing your fingers over each sensor. A reading of over 1000 will result triggering the calibrate routine.
+2. Advancing arrow shown in green, yellow then red (on the 8x8 RGB) for the front sensor. When red, it's time to stop!
+3. Left and right hand side of the RGB shown in green, yellow then blue for the side sensor. Blue means your car is far enough over.
+4. When no change in forward movement is detected - ie. reading doesn't change much, the micro-controller will enter deepsleep (whether this helps save the battery only time will tell)
+5. Various variables saved to RTC when the unit sleeps, and reloaded when it wakes up - a quick front reading is taken and if there still isn't any change the controller enters deepsleep again.
+6. OTA updating is possible - it may fail if you happen to try and upload during a sleep operation.
+7. An LCD display can be connected to monitor the units operation (recommended only for debugging/setup) - comment out in the code to disable support.
+8. Voltage can be monitored if enabled - not fully implemented to do anything with yet but ideally for a low battery warning.
+
 TO DO
+=====
 
-at the moment the unit is on all the time - need to implement a sleep routine to periodically check for car presence as well as if distance is further than
-the garage door which should indicate car is on its way in.
+1. Low battery warning
+2. Try and further combat spurious readings from the sensors (tried a few libraries) - if anyone can offer a solution that'd be appreciated.
+3. When red, instead of an advancing arrow maybe just flashing red square.
 
-save settings to EEPROM so that they persist
+I recommend that once you configure for your car that you hard code those distances in settings.h
 
+Libraries needed/used
+=====================
 
-anyhow, to configure either sensor distance, hold your hand over the sensor until panel flashes blue, then remove your hand, it will then measure the distance and
-set that as the final distance.
+Thanks to the respective authors of these libraries, and apologies if I missed any
 
-the rgb panel has a green, yellow, red advancing arrow to indicate forward movement (red is stop!)
+https://github.com/bbkbarbar/Arduino-HC-SR04-library
+https://github.com/highno/rtcvars
 
-the sides of the rgb panel, have green, yellow, blue to indicate side distance (blue is stop)
-
-You'll need this library: https://github.com/bbkbarbar/Arduino-HC-SR04-library
