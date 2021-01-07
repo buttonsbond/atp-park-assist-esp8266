@@ -17,6 +17,18 @@ Features
 7. An LCD display can be connected to monitor the units operation (recommended only for debugging/setup) - comment out in the code to disable support.
 8. Voltage can be monitored if enabled - not fully implemented to do anything with yet but ideally for a low battery warning.
 
+3D Models
+=========
+The folder final-models contains some STL files of the enclosures I created and used - the originals are in Tinkercad. 
+* remixed-from-tinkercad-user-weselle - in this folder 2 x STL files for the ultrasonic sensor enclosure. Bear in mind that I bent the pins almost fully back on themselves rather than sticking out of the top/bottom - if you still want the pins sticking out the bottom/top then checkout weselle on Tinkercad.
+* boxslot.stl - the main box with a thin lip in the bottom to stop the LED grid falling out (you can optionally print insert.stl in white to create a diffuser to go in first ahead of the LED grid.
+* mountsall.stl - this is an square 1mm insert that goes in on top of the LED grid, it has posts for mounting D1 mini (my version has holes for the posts to go through), posts for mounting standard DC buck converter, and a holder for 12V 23A battery, the battery found commonly in cheap doorbell push button units.
+* plug.stl - this is the mount I made to slot into the metal aluminium tubing I mount the main unit on, it slides into place (quite tightly)
+* insert.stl - print this in white PLA for a diffuser (optional) - FILE NOT YET ADDED
+* lid.stl - lid for the main box - FILE NOT YET ADDED
+
+You'll need 2 each of the ultrasonic sensor models.
+
 TO DO
 =====
 
