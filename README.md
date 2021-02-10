@@ -39,6 +39,11 @@ TO DO
 
 I recommend that once you configure for your car that you hard code those distances in settings.h
 
+Wiring up
+=========
+I've included a couple of exported Powerpoint slides to show how I wired up. However, it's not quite right - I need some help on this one. Basically I have a small solar panel repurposed from a solar outside light from LIDL - it gives out up to about 5 volts when in direct sun. No idea what the charge current is. It's enough to light the red LED on the battery shield but I don't think it is enough for charging.
+I added in the power board so that the battery shield output should give 5 volts for as long as it can (this of course makes my voltage measurement incorrect). The battery drains after about 8 or 9 hours (2000mah 3.7v lion battery)
+
 Libraries needed/used
 =====================
 
