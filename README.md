@@ -16,6 +16,7 @@ Features
 6. OTA updating is possible - it may fail if you happen to try and upload during a sleep operation.
 7. An LCD display can be connected to monitor the units operation (recommended only for debugging/setup) - comment out in the code to disable support.
 8. Voltage can be monitored if enabled - not fully implemented to do anything with yet but ideally for a low battery warning.
+9. MQQT implemented to send front and side readings, f&s limits (after a calibration), time (periodically), whether parked or not (1 or 0), voltage level (see notes further down). 
 
 3D Models
 =========
@@ -33,8 +34,8 @@ You'll need 2 each of the ultrasonic sensor models.
 TO DO
 =====
 
-1. Low battery warning
-2. Try and further combat spurious readings from the sensors (tried a few libraries) - if anyone can offer a solution that'd be appreciated.
+1. Low battery warning (see note under wiring up!)
+2. Try and further combat spurious readings from the sensors (tried a few libraries) - if anyone can offer a solution that'd be appreciated. I've built in various checks to try and combat this. I read somewhere that the Newping library might be an option which I might try once I've got the power issues sorted.
 3. When red, instead of an advancing arrow maybe just flashing red square.
 
 I recommend that once you configure for your car that you hard code those distances in settings.h
@@ -42,7 +43,8 @@ I recommend that once you configure for your car that you hard code those distan
 Wiring up
 =========
 I've included a couple of exported Powerpoint slides to show how I wired up. However, it's not quite right - I need some help on this one. Basically I have a small solar panel repurposed from a solar outside light from LIDL - it gives out up to about 5 volts when in direct sun. No idea what the charge current is. It's enough to light the red LED on the battery shield but I don't think it is enough for charging.
-I added in the power board so that the battery shield output should give 5 volts for as long as it can (this of course makes my voltage measurement incorrect). The battery drains after about 8 or 9 hours (2000mah 3.7v lion battery)
+I added in the power board so that the battery shield output should give 5 volts for as long as it can (this of course makes my voltage measurement incorrect, and since I haven't put the battery shield in the same enclosure as the D1 mini unless I run a separate wire for the 3v output of the battery shield module to the d1 mini I won't be able to get a reading from the batteries - maybe I don't need the voltage regulator if I can get the solar charging working). The battery drains after about 8 or 9 hours (2000mah 3.7v lion battery) at the moment.
+I'm not an electronics expert by any stretch of the imagination so if someone can let me know what the setup should be - comment away!
 
 Libraries needed/used
 =====================
