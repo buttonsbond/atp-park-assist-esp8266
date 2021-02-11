@@ -6,8 +6,10 @@
 
 #include <hcsr04.h>
 //#include <HCSR04.h>  // trying this library to see if results any better than standard pulsein
+#include <NTPClient.h>
 #include <ESP8266WiFi.h>
 #include <WiFiClient.h>
+#include <PubSubClient.h>
 #include <ESP8266WebServer.h>
 #include "settings.h"
 #ifdef ENABLE_OTA
@@ -34,6 +36,10 @@ unsigned short distance;
 //UltraSonicDistanceSensor hc_s(trigPinSide,echoPinSide);
 
 ESP8266WebServer server(80);   //instantiate server at port 80 (http port)
+
+// Define NTP Client to get time
+WiFiUDP ntpUDP;
+NTPClient timeClient(ntpUDP, "europe.pool.ntp.org", utcOffsetInSeconds, 60000);
  
 String page = "";
 
@@ -50,7 +56,11 @@ void setup(void){
   state.registerVar( &MidFront);
   state.registerVar( &MidSide);
   state.registerVar( &samereading);
+  state.registerVar( &CurrentHour);
+  state.registerVar( &CurrentMin);
+  state.registerVar( &successivechecks);
   state.loadFromRTC();
+  sprintf(mytime,"%i:%i",CurrentHour,CurrentMin);
 hc_f.init(trigPinFront, echoPinFront);
 hc_s.init(trigPinSide, echoPinSide);
 
@@ -62,8 +72,11 @@ pinMode(echoPinFront, INPUT);
 pinMode(trigPinSide, OUTPUT); // Sets the trigPin as an Output
 pinMode(echoPinSide, INPUT);
 pinMode(VOLTAGE_IN, INPUT); // read the voltage across the voltage divider to help monitor battery level
-  
+pinMode(D8,OUTPUT);
+
+#ifdef SERIAL_DEBUG  
   Serial.begin(115200);
+#endif
   WiFi.begin(ssid, password); //begin WiFi connection
  // Serial.println("");
   
@@ -77,6 +90,16 @@ pinMode(VOLTAGE_IN, INPUT); // read the voltage across the voltage divider to he
   debugmessages(ssid);
   debugmessages("IP address: ");
   debugmessages(WiFi.localIP().toString().c_str());
+
+  // get the time
+  timeClient.begin();
+  GetHour();
+  debugmessages(mytime);
+  //Serial.println(CurrentHour);
+  #ifdef ENABLE_MQTT
+    mqtt_setup();
+    mqttpublish();
+  #endif
   server.on("/", [](){
     page = "webpage"; 
     server.send(200, "text/html", page);
@@ -100,10 +123,15 @@ void loop(void){
 
   GetDistances();
   ArduinoOTA.handle();
+  GetVoltage();
+  GetHour();
   #ifdef LCD_DEBUG
     showsensors();
+    showvolts("VO: " + String(voltage));
   #endif
-  showvolts("VO: " + String(analogRead(VOLTAGE_IN)));
+  #ifdef ENABLE_MQTT
+    mqttpublish();
+  #endif
 
 //  delay(200);
 //  server.handleClient();

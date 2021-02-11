@@ -1,6 +1,6 @@
 void otasetup() {
    ArduinoOTA.setPort(OTAport);
-   ArduinoOTA.setHostname("parking");
+   ArduinoOTA.setHostname(host);
    //ArduinoOTA.setPassword((const char *)OTAPassword);
    ArduinoOTA.onStart([]() {
     String type;

@@ -94,7 +94,7 @@ void arrowadvance(int step, char col) {
   }
   FastLED.show();
   // Serial.print("advance...");
-  delay(100);
+  delay(50);
 }
 
 void advance(char col) {
@@ -127,14 +127,17 @@ void sideindicators(char col) {
   FastLED.show();
 }
 
-void calibrateFront() {
+void calibrateFront(char x) {
 int brightness = 0;
 int fadeAmount = 100;
-
+int st = 1;
+if (x == 'S') {
+  st = 2;
+}
 lightsoff();
 
 for (int fadeloop = 0; fadeloop < 10; fadeloop ++) {
-for(int i = 0; i < NUM_LEDS; i++ ) {
+for(int i = 0; i < NUM_LEDS; i+=st ) {
     leds[i].setRGB(0,255,250); // Set Color HERE!!!
     leds[i].fadeLightBy(brightness);
   }
@@ -148,7 +151,7 @@ for(int i = 0; i < NUM_LEDS; i++ ) {
   delay(500); // 500 is half a second so this loop will wait 5 seconds
 }
 // 5 seconds have gone, measure distance
-Serial.println("MEASURING");
+//Serial.println("MEASURING");
 
 }
 
@@ -182,4 +185,25 @@ void colours(char col) {
       break;
   }
   //return rgb;
+}
+
+void ShowSleep(void) {
+  int n=8;
+  if (CurrentSleep == StandardSleep) {
+    // standardsleep
+  }
+  if (CurrentSleep == LowPowerSleep) {
+    n=16;
+  }
+  if (CurrentSleep == InactiveSleep) {
+    n=32;
+  }
+  colours('B'); 
+  int r=rgb.r;
+  int g=rgb.g;
+  int b=rgb.b;
+  for (int f = 1; f < CurrentSleep; f++) {
+    setPixel(f,r,g,b);
+  }
+    FastLED.show();
 }

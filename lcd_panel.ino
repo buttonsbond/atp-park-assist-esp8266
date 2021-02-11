@@ -36,16 +36,24 @@ void lcdmessage(int line, String msg) {
 }
 
 void topright() {
+#ifdef LCD_DEBUG
   lcd.setCursor(13,0);
   lcd.print("CH: " + String(nochange)+" ");
+#endif
 }
 
 void bottomright() {
+#ifdef LCD_DEBUG
   lcd.setCursor(13,2);
   lcd.print("SF: " + String(SetDistanceFront)+" ");
+  lcd.setCursor(7,3);
+  lcd.print("sbt: " + String(CurrentSleep) + "|" + String(ledbrightness) + "|" + String(CurrentHour) + ":" + String(CurrentMin));
+#endif
 }
 
 void showvolts(String s) {
+ #ifdef LCD_DEBUG
   lcd.setCursor(13,1);
   lcd.print(s);
+#endif
 }
